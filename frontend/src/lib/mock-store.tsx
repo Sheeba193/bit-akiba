@@ -10,6 +10,7 @@ type MockStoreState = {
   transactions: MockTransaction[];
   simulateReceivePayment: (amount: number) => { invoiceId: string };
   setAutosavePercent: (percent: number) => void;
+  connectWalletAddress: (address: string) => { ok: boolean; message: string };
 };
 
 const STORAGE_KEY = "bitakiba-mock-store-v1";
@@ -92,12 +93,26 @@ export function MockStoreProvider({ children }: { children: React.ReactNode }) {
     }));
   };
 
+  const connectWalletAddress = (address: string) => {
+    const trimmed = address.trim();
+    if (trimmed.length < 10) {
+      return { ok: false, message: "Please enter a valid wallet address." };
+    }
+
+    setWallet((prev) => ({
+      ...prev,
+      walletAddress: trimmed
+    }));
+    return { ok: true, message: "Wallet connected. You can now receive and save." };
+  };
+
   const value = useMemo(
     () => ({
       wallet,
       transactions,
       simulateReceivePayment,
-      setAutosavePercent
+      setAutosavePercent,
+      connectWalletAddress
     }),
     [wallet, transactions]
   );

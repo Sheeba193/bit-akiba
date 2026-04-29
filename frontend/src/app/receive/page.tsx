@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import BottomNav from "@/components/navigation/BottomNav";
 import { formatKes } from "@/lib/mock-data";
 import { useMockStore } from "@/lib/mock-store";
@@ -27,10 +28,33 @@ export default function ReceivePage() {
     [effectiveAmount, wallet.autosavePercent]
   );
 
+  if (!wallet.walletAddress) {
+    return (
+      <main className="min-h-screen bg-slate-50 pb-20">
+        <section className="mx-auto max-w-md space-y-4 p-4">
+          <h2 className="text-xl font-semibold">Receive Payment</h2>
+          <div className="rounded-2xl bg-white p-4 shadow-sm">
+            <p className="text-sm text-slate-600">
+              Connect a wallet first from the home landing page before receiving payments.
+            </p>
+            <Link
+              href="/"
+              className="mt-3 block w-full rounded-2xl bg-[#003D9B] p-3 text-center font-semibold text-white"
+            >
+              Go to Home
+            </Link>
+          </div>
+        </section>
+        <BottomNav />
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen bg-slate-50 pb-20">
       <section className="mx-auto max-w-md space-y-4 p-4">
         <h2 className="text-xl font-semibold">Receive Payment</h2>
+        <p className="text-xs text-slate-500">Wallet: {wallet.walletAddress}</p>
         <input
           className="w-full rounded-xl border border-slate-200 bg-white p-3 text-lg"
           type="number"

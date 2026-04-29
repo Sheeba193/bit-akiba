@@ -12,7 +12,8 @@ export const mockWallet = {
   savingsBalance: 3210,
   todaysEarnings: 1980,
   autosavePercent: 10,
-  savingsLockStatus: "Locked until weekly cycle"
+  savingsLockStatus: "Locked until weekly cycle",
+  walletAddress: ""
 };
 
 export const mockTransactions: MockTransaction[] = [

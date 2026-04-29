@@ -2,18 +2,20 @@
 
 import { useMemo, useState } from "react";
 import BottomNav from "@/components/navigation/BottomNav";
-import { formatKes, mockWallet } from "@/lib/mock-data";
+import { formatKes } from "@/lib/mock-data";
+import { useMockStore } from "@/lib/mock-store";
 
 type PaymentStatus = "idle" | "pending" | "paid";
 
 export default function ReceivePage() {
+  const { wallet, simulateReceivePayment } = useMockStore();
   const [amount, setAmount] = useState("");
   const [status, setStatus] = useState<PaymentStatus>("idle");
   const [invoiceId, setInvoiceId] = useState("");
 
   const handleGenerate = () => {
-    const currentInvoiceId = `inv_${Date.now()}`;
-    setInvoiceId(currentInvoiceId);
+    const { invoiceId: createdInvoiceId } = simulateReceivePayment(Number(amount || 1200));
+    setInvoiceId(createdInvoiceId);
     setStatus("pending");
     window.setTimeout(() => {
       setStatus("paid");
@@ -21,8 +23,8 @@ export default function ReceivePage() {
   };
   const effectiveAmount = useMemo(() => Number(amount || 1200), [amount]);
   const savedPreview = useMemo(
-    () => Number(((effectiveAmount * mockWallet.autosavePercent) / 100).toFixed(2)),
-    [effectiveAmount]
+    () => Number(((effectiveAmount * wallet.autosavePercent) / 100).toFixed(2)),
+    [effectiveAmount, wallet.autosavePercent]
   );
 
   return (
@@ -48,7 +50,7 @@ export default function ReceivePage() {
           {invoiceId ? <p className="mt-1 text-xs text-slate-400">Invoice: {invoiceId}</p> : null}
         </div>
         <div className="rounded-xl bg-white p-3 text-sm shadow-sm">
-          Auto-save preview ({mockWallet.autosavePercent}%):{" "}
+          Auto-save preview ({wallet.autosavePercent}%):{" "}
           <span className="font-semibold text-blue-700">{formatKes(savedPreview)}</span>
         </div>
         <div className="rounded-xl bg-white p-3 shadow-sm">

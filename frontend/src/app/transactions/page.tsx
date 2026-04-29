@@ -1,13 +1,18 @@
+"use client";
+
 import BottomNav from "@/components/navigation/BottomNav";
-import { formatKes, mockTransactions } from "@/lib/mock-data";
+import { formatKes } from "@/lib/mock-data";
+import { useMockStore } from "@/lib/mock-store";
 
 export default function TransactionsPage() {
+  const { transactions } = useMockStore();
+
   return (
     <main className="min-h-screen bg-slate-50 pb-20">
       <section className="mx-auto max-w-md space-y-4 p-4">
         <h2 className="text-xl font-semibold">Transactions</h2>
         <div className="space-y-3">
-          {mockTransactions.map((tx) => (
+          {transactions.map((tx) => (
             <article key={tx.id} className="rounded-xl bg-white p-4 shadow-sm">
               <div className="flex items-start justify-between gap-2">
                 <p className="font-semibold">{formatKes(tx.amount)}</p>

@@ -2,17 +2,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/receive", label: "Receive" },
-  { href: "/savings", label: "Savings" },
-  { href: "/transactions", label: "Tx" },
-  { href: "/settings/language", label: "Lang" }
-];
+import { useTranslation } from "react-i18next";
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const { t } = useTranslation();
+  const navItems = [
+    { href: "/", label: t("home") },
+    { href: "/receive", label: t("receivePayment") },
+    { href: "/savings", label: t("savings") },
+    { href: "/transactions", label: t("transactions") },
+    { href: "/settings/language", label: t("language") }
+  ];
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 border-t bg-white">
